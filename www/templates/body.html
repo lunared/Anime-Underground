@@ -25,7 +25,7 @@
     </div>
     <div class="row">
       <div class="five columns">
-          <input class="u-full-width" type="text" id="rtmp_link" value="{{hostname}}/hls/animeunderground.m3u8" disabled />
+          <input class="u-full-width" type="text" id="rtmp_link" value="{{stream_root}}" disabled />
       </div>
       <div class="four columns">
           <a {% if quality == 'high' %}
@@ -42,7 +42,7 @@
             href="/low">Low</a>
       </div>
       <div class="three columns">
-          <a href="https://discordapp.com/" class="button button-discord u-pull-right u-full-width">
+          <a href="{{chat}}" class="button button-discord u-pull-right u-full-width">
             Join Chat
           </a>
       </div>
