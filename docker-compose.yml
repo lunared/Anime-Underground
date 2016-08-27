@@ -1,0 +1,19 @@
+version: '2'
+services:
+  rtmp:
+    build: .
+    ports:
+     - "80:80"
+     - "1935:1935"
+    links:
+     - site
+    volumes:
+     - ./nginx.conf:/config/nginx.conf:ro
+    depends_on:
+     - site
+  site:
+    build: ./www
+    expose:
+     - "5000"
+    volumes:
+     - ./www:/var/www:ro
