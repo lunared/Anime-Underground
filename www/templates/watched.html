@@ -1,0 +1,24 @@
+<table class="u-full-width" >
+    <thead>
+        <tr>
+            <th>Show</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ts in watched %}
+        <tr>
+            <td>
+                <a class="tooltip" href="{{ts.link}}">{{ ts.title }}</a>
+                <div class="tooltip-text">
+                    <img src="{{ts.thumbnail}}" style="float:left; width: 40%;"/>
+                    <p style="float:left; width: 50%; padding-left: 10%;">
+                        {{ ts.plot }}
+                    </p>
+                </div>
+            </td>
+            <td>{{ ts.genres }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

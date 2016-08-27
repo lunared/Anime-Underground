@@ -1,0 +1,70 @@
+body {
+    background: rgb(39,40,34);
+    color: white;
+}
+
+input {
+    background: rgba(0,0,0,.5) !important;
+    border-color: rgba(255,255,255,.25) !important;
+    color: rgba(255,255,255,.25);
+}
+
+.row {
+  margin-top: .5em;
+  margin-bottom: .5em;
+}
+
+.button-discord {
+  background: rgb(115,139,215);
+  border: 0px solid transparent;
+  color: white;
+  transition: background .15s ease;
+  text-transform: uppercase;
+}
+
+.button-discord:hover {
+  background: rgb(49,68,127);
+  color: white;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+#title h1,
+#title h5 {
+  display: inline-block;
+}
+
+#stream {
+  width: 100% !important;
+  height: auto;
+}
+.tooltip-text{
+  display: none;
+}
+
+.qtip-big {
+  max-width: 400px;
+  width: 400px;
+}
+
+.container.loading {
+  display: none;
+}
+
+.container.loading + .loadingmsg {
+  display: block;
+  text-align: center;
+}
+
+.container + .loadingmsg {
+  display: none;
+}
+
+h3 span {
+  font-size: .4em;
+  letter-spacing: 0;
+  margin-left: .5em;
+  opacity: .5;
+}

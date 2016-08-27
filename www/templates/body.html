@@ -1,0 +1,86 @@
+<!doctype html>
+<head>
+  <title>{{ brand }} - Live Fridays @ 9PM</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+  <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}} ">
+  <link href="http://vjs.zencdn.net/5.10.8/video-js.css" rel="stylesheet">
+  
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <div id="title" class="row">
+      <h1>
+          {{ brand }}
+      </h1>
+      <h5>{{ subtitle }}</h5>
+    </div>
+    <div class="row" id="player">
+      {% include "player.html" %}
+    </div>
+    <div class="row">
+      <div class="five columns">
+          <input class="u-full-width" type="text" id="rtmp_link" value="{{hostname}}/hls/animeunderground.m3u8" disabled />
+      </div>
+      <div class="four columns">
+          <a {% if quality == 'high' %}
+              class="button button-primary"
+            {% else %}
+              class="button"
+            {% endif %}
+            href="/high">HD</a>
+          <a {% if quality == 'low' %}
+              class="button button-primary"
+            {% else %}
+              class="button"
+            {% endif %}
+            href="/low">Low</a>
+      </div>
+      <div class="three columns">
+          <a href="https://discordapp.com/" class="button button-discord u-pull-right u-full-width">
+            Join Chat
+          </a>
+      </div>
+    </div>
+    <div class="row u-text-center">
+
+    </div>
+    <div class="row">
+      <h3>Schedule<span>*Start times are an estimation and may be off by a few minutes</span></h3>
+      {% include "schedule.html" %}
+    </div>
+    <div class="row">
+      <h5>Previously Watched</h5>
+      {% include "watched.html" %}
+    </div>
+    <div class="row">
+      <span class="u-pull-right">Anime metadata provided by <a href="http://www.animenewsnetwork.com/" title="Anime News Network">ANN</a></span>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      $('.tooltop').each(function(){
+        console.log('elem');
+          $(this).qtip({
+              content: {
+                  text: $(this).next('.tooltip-text'),
+                  title: $(this).text(),
+              },
+              position: {
+                  my: "bottom center",
+                  at: "top center"
+              },
+              style: {
+                  classes: "qtip-dark qtip-shadow qtip-big",
+              }
+          });
+      });
+    })();
+  </script>
+</body>
