@@ -15,12 +15,13 @@ SCHEDULE = [
 WATCHED = [
     11017, 16900, 15742, 16247, 8550, 13, 17825, 1029, 166
 ]
-SERIES = [ts['id'] for ts in SCHEDULE]
-ALL_SERIES = WATCHED + SERIES
 CHAT_URI = "http://discordapp.com"
 STREAM_NAME = "animeunderground"
 
 # End App Configuration
+
+SERIES = [ts['id'] for ts in SCHEDULE]
+ALL_SERIES = WATCHED + SERIES
 
 def load_anime():
     import xml.etree.ElementTree as ET
