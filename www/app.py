@@ -7,16 +7,28 @@ app = Flask(__name__)
 BRAND = "Anime Underground"
 SUBTITLE = "Live Fridays @ 9pm EST"
 SCHEDULE = [
-    {"id": 17991, "time": "09:00PM"},
-    {"id": 1053, "time": "09:50PM"},
-    {"id": 15895, "time": "10:15PM"},
-    {"id": 394, "time": "11:00PM"}
+    {"id": 'mawaru-penguindrum', "time": "09:00PM"},
+    {"id": 'nourin', "time": "09:50PM"},
+    {"id": 'mushishi-zoku-shou', "time": "10:15PM"},
+    {"id": 'thunderbolt-fantasy', "time": "11:00PM"}
 ]
 WATCHED = [
-    11017, 16900, 15742, 16247, 8550, 13, 17825, 1029, 166
+    'working-1',
+    'wakako-zake',
+    'pupipo',
+    'danna-ga-nani-wo-itteiru-ka-wakaranai-ken',
+    'gyakkyou-burai-kaiji-ultimate-survivor',
+    'cowboy-bebop',
+    'mobile-suit-gundam-thunderbolt',
+    'ys',
+    'serial-experiments-lain',
+    'sakamoto-desu-ga',
+    'android-ana-maico-2010',
+    'lodoss-tou-senki'
 ]
 CHAT_URI = "http://discordapp.com"
 STREAM_NAME = "animeunderground"
+HUMMINGBIRD_API_KEY = "d4cba8366841f91d8a70"
 
 # End App Configuration
 
@@ -24,27 +36,7 @@ SERIES = [ts['id'] for ts in SCHEDULE]
 ALL_SERIES = WATCHED + SERIES
 
 def load_anime():
-    import xml.etree.ElementTree as ET
-    import xml.dom.minidom as xmlprinter
     import requests
-
-    # load up the schedule from our json file
-    api = "http://cdn.animenewsnetwork.com/encyclopedia/api.xml?"
-
-    query = []
-    for show in ALL_SERIES:
-        query.append("anime=" + str(show))
-
-    api += "&".join(query)
-
-    # query the api
-    response = requests.get(api)
-    xml = ET.fromstring(response.content)
-
-    context = {
-        'schedule': [],
-        'watched': [],
-    }
 
     class Timeslot:
         time = None
@@ -54,6 +46,7 @@ def load_anime():
         thumbnail = ""
         plot = ""
         genres = ""
+        episodes = 0
 
         @property
         def id(self):
@@ -62,37 +55,37 @@ def load_anime():
         @id.setter
         def id(self, value):
             self._id = value
-            self.link = "http://www.animenewsnetwork.com/encyclopedia/anime.php?id=" + value
+            self.link = "https://hummingbird.me/anime/{0}".format(value)
 
+    # load up the schedule from our json file
+    api = "http://hummingbird.me/api/v2/anime/{0}"
+    context = {
+        'schedule': [],
+        'watched': [],
+    }
 
-    # traverse the api xml response for show metadata
-    for anime in [node for node in xml if node.tag == 'anime']:
-        timeslot = Timeslot()
-        timeslot.id = anime.attrib['id']
-        genres = []
-
-        # parse info
-        for info in [node for node in anime if node.tag == 'info']:
-            _type = info.attrib['type']
-            if _type == 'Genres':
-                genres.append(info.text)
-            elif _type == 'Picture':
-                images = [node for node in info if node.tag == 'img']
-                if len(images) > 0:
-                    timeslot.thumbnail = images[0].attrib['src']
-            elif _type == 'Main title':
-                timeslot.title = info.text
-            elif _type == "Plot Summary":
-                timeslot.plot = info.text
-        timeslot.genres = ", ".join(genres)
-        for SERIES in SCHEDULE:
-            if SERIES['id'] == int(timeslot.id):
-                timeslot.time = SERIES['time']
-                break
-        if not timeslot.time:
-            context['watched'].append(timeslot)
-        else:
-            context['schedule'].append(timeslot)
+    for show in ALL_SERIES:
+        # query the api
+        response = requests.get(api.format(show), headers={
+	    'X-Client-Id': HUMMINGBIRD_API_KEY
+        })
+        anime = response.json().get('anime')
+        if anime:
+            timeslot = Timeslot()
+            timeslot.id = anime['id']
+            timeslot.title = anime['titles']['canonical']
+            timeslot.thumbnail = anime['poster_image']
+            timeslot.genres = ", ".join(anime['genres'])
+            timeslot.episodes = anime['episode_count']
+            timeslot.plot = anime['synopsis']
+            for SERIES in SCHEDULE:
+                if SERIES['id'] == show:
+                    timeslot.time = SERIES['time']
+                    break
+            if not timeslot.time:
+                context['watched'].append(timeslot)
+            else:
+                context['schedule'].append(timeslot)
 
     return context
 
@@ -102,19 +95,19 @@ def _base(quality):
         "brand": BRAND,
         "subtitle": SUBTITLE,
         "quality": quality,
-        "stream_root": f"{request.url_root}hls/{STREAM_NAME}.m3u8",
-        "stream": f"{request.url_root}hls/{STREAM_NAME}_{resolution}/index.m3u8",
+        "stream_root": "{:s}hls/{:s}.m3u8".format(request.url_root, STREAM_NAME),
+        "stream": "{:s}hls/{:s}_{:s}/index.m3u8".format(request.url_root, STREAM_NAME, resolution),
         "chat": CHAT_URI,
         **load_anime()
     }
-    
+
     return render_template("body.html", **context), 200
 
 
 @app.route('/low')
 def low_quality():
     return _base("low")
-    
+
 @app.route('/')
 @app.route('/high')
 def high_quality():
