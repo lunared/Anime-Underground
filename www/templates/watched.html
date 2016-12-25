@@ -10,12 +10,14 @@
         <tr>
             <td>
                 <a class="tooltip" href="{{ts.link}}">{{ ts.title }}</a>
+                {% if ts.link != ""  %}
                 <div class="tooltip-text">
                     <img src="{{ts.thumbnail}}" style="float:left; width: 40%;"/>
                     <p style="float:left; width: 50%; padding-left: 10%;">
                         {{ ts.plot }}
                     </p>
                 </div>
+                {% endif %}
             </td>
             <td>{{ ts.genres }}</td>
         </tr>
