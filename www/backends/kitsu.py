@@ -6,7 +6,7 @@ class KitsuTimeslot(Timeslot):
         super().__init__(link)
 
 class KitsuBackend(AnimeBackend):
-    api = "http://kitsu.io/api/edge/anime?filter[slug]={0}&fields[anime]=slug,posterImage,canonicalTitle,synopsis,genres,episodeCount&include=genres&page[limit]=20"
+    api = "http://kitsu.io/api/edge/anime?filter[slug]={0}&fields[anime]=slug,posterImage,canonicalTitle,titles,synopsis,genres,episodeCount&include=genres&page[limit]=20"
     name = "Kitsu"
     url = "https://kitsu.io"
 
@@ -49,7 +49,11 @@ class KitsuBackend(AnimeBackend):
             attr = show['attributes']
             timeslot = KitsuTimeslot("https://kitsu.io/anime/"+attr['slug'])
             timeslot.id = attr['slug']
-            timeslot.title = attr['canonicalTitle']
+            timeslot.title = {
+                "en": attr['titles'].get('en', attr['titles'].get('en_jp', attr['canonicalTitle'])),
+                "canonical": attr['canonicalTitle'],
+                "jp": attr['titles'].get('ja_jp', attr['canonicalTitle'])
+            }
             timeslot.thumbnail = attr['posterImage']['tiny'] if attr['posterImage'] else None
             timeslot.genres = ", ".join(list(map(lambda genre: genres[genre['id']], show['relationships']['genres']['data'])))
             timeslot.episodes = attr['episodeCount']
@@ -64,5 +68,6 @@ class KitsuBackend(AnimeBackend):
                 context['schedule'].append(timeslot)
 
         context['watched'].sort(key=lambda show: WATCHED.index(show.id))
+        context['schedule'].sort(key=lambda show: show.time)
 
         return context

@@ -9,7 +9,9 @@ from settings import *
 anime = {}
 backend = None
 
-def _base(quality):
+@app.route('/')
+def high_quality():
+    quality = request.args.get('quality', 'low')
     resolution = "480p" if quality == 'low' else "720p"
     context = {
         "brand": BRAND,
@@ -17,26 +19,18 @@ def _base(quality):
         "quality": quality,
         "stream_root": "{:s}hls/{:s}.m3u8".format(request.url_root, STREAM_NAME),
         "stream": "{:s}hls/{:s}_{:s}/index.m3u8".format(request.url_root, STREAM_NAME, resolution),
+        "stream_fallback": "{:s}hls/{:s}_{:s}/index.m3u8".format(request.url_root, STREAM_NAME, "480p"),
         "chat": CHAT_URI,
+        "language": request.args.get('language', 'en'),
         "backend": {
             "name": backend.name,
-            "url": backend.url
+            "url": backend.url,
+            "cls": backend.__class__.__name__
         },
         **anime
     }
 
     return render_template("body.html", **context), 200
-
-
-@app.route('/low')
-def low_quality():
-    return _base("low")
-
-
-@app.route('/')
-@app.route('/high')
-def high_quality():
-    return _base("high")
 
 
 if __name__ == '__main__':

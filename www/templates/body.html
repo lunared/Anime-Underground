@@ -9,7 +9,7 @@
 
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.light.min.js"></script>
 
 </head>
 <body>
@@ -33,13 +33,13 @@
             {% else %}
               class="button"
             {% endif %}
-            href="/high">HD</a>
+            href="/?language={{language}}&quality=high">HD</a>
           <a {% if quality == 'low' %}
               class="button button-primary"
             {% else %}
               class="button"
             {% endif %}
-            href="/low">Low</a>
+            href="/?language={{language}}&quality=low">Low</a>
       </div>
       <div class="three columns">
           <a href="{{chat}}" class="button button-discord u-pull-right u-full-width">
@@ -55,7 +55,31 @@
       {% include "schedule.html" %}
     </div>
     <div class="row">
-      <h5>Previously Watched</h5>
+      <div class="six columns">
+        <h5>Previously Watched</h5>
+      </div>
+      {% if backend.cls == 'KitsuBackend' %}
+      <div class="six columns">
+          <a {% if language == 'en' %}
+              class="button button-primary"
+            {% else %}
+              class="button"
+            {% endif %}
+            href="/?language=en&quality={{quality}}">English</a>
+          <a {% if language == 'canonical' %}
+              class="button button-primary"
+            {% else %}
+              class="button"
+            {% endif %}
+            href="/?language=canonical&quality={{quality}}">Canonical</a>
+          <a {% if language == 'jp' %}
+            class="button button-primary"
+          {% else %}
+            class="button"
+          {% endif %}
+          href="/?language=jp&quality={{quality}}">Japanese</a>
+      </div>
+      {% endif %}
       {% include "watched.html" %}
     </div>
     <div class="row">

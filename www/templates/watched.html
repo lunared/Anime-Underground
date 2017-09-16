@@ -9,7 +9,9 @@
         {% for ts in watched %}
         <tr>
             <td>
-                <a class="tooltip" href="{{ts.link}}">{{ ts.title }}</a>
+                <a class="tooltip" href="{{ts.link}}">
+                    {{ ts.title[language] if backend.cls == 'KitsuBackend' else ts.title }}
+                </a>
                 {% if ts.link != ""  %}
                 <div class="tooltip-text">
                     <img src="{{ts.thumbnail}}" style="float:left; width: 40%;"/>

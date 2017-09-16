@@ -10,7 +10,9 @@
         {% for ts in schedule %}
         <tr v-for="ts in schedule">
             <td>
-            <a class="tooltip" href="{{ts.link}}">{{ ts.title }}</a>
+            <a class="tooltip" href="{{ts.link}}">
+                {{ ts.title[language] if backend.cls == 'KitsuBackend' else ts.title }}
+            </a>
             <div class="tooltip-text">
                 <img src="{{ts.thumbnail}}" style="float:left; width: 40%;"/>
                 <p style="float:left; width: 50%; padding-left: 10%;">
