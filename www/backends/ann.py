@@ -11,7 +11,9 @@ class ANNTimeslot(Timeslot):
 
 class ANNBackend(AnimeBackend):
     api = "http://cdn.animenewsnetwork.com/encyclopedia/api.xml"
-        
+    name = "ANN"
+    url = "http://www.animenewsnetwork.com/"
+
     def test_backend(self):
         req = requests.get(ANNBackend.api)
         return req.status_code == 200
