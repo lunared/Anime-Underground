@@ -1,0 +1,21 @@
+version: '3'
+services:
+  rtmp:
+    image: alfg/nginx-rtmp
+    ports:
+     - "8080:80"
+     - "1935:1935"
+    links:
+     - site
+    volumes:
+     - ./nginx.conf:/config/nginx.conf:ro
+    depends_on:
+     - site
+  site:
+    image: node:12
+    working_dir: /var/www
+    cmd: ['node', 'index.js']
+    expose:
+     - "8080"
+    volumes:
+     - ./site:/var/www:ro

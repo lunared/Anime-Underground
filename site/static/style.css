@@ -1,0 +1,118 @@
+body {
+    background: rgb(39,40,34);
+    color: white;
+}
+
+input {
+    background: rgba(0,0,0,.5) !important;
+    border-color: rgba(255,255,255,.25) !important;
+    color: rgba(255,255,255,.25);
+}
+
+.row {
+  margin-top: .5em;
+  margin-bottom: .5em;
+}
+
+.button-discord {
+  background: rgb(115,139,215);
+  border: 0px solid transparent;
+  color: white;
+  transition: background .15s ease;
+  text-transform: uppercase;
+}
+
+.button-discord:hover {
+  background: rgb(49,68,127);
+  color: white;
+}
+
+.u-text-center {
+  text-align: center;
+}
+
+#title h1,
+#title h5 {
+  display: inline-block;
+}
+
+#stream {
+  width: 100% !important;
+  height: auto;
+}
+
+.qtip-big {
+  max-width: 400px;
+  width: 400px;
+}
+
+.container.loading {
+  display: none;
+}
+
+.container.loading + .loadingmsg {
+  display: block;
+  text-align: center;
+}
+
+.container + .loadingmsg {
+  display: none;
+}
+
+h3 span {
+  font-size: .4em;
+  letter-spacing: 0;
+  margin-left: .5em;
+  opacity: .5;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltip-text {
+  width: 400px;
+  background: rgba(0,0,0,.9);
+  border-bottom: 2px solid rgba(255,255,255,.5);
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 10px;
+  padding: .6em;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+.tooltip .tooltip-text {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -200px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.tooltip .tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip .tooltip-text {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity .3s, transform .15s;
+}
+
+.tooltip:hover .tooltip-text {
+  opacity: 1;
+  transform: translateY(0);
+}

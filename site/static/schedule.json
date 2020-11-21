@@ -1,0 +1,27 @@
+{
+    "watched": [
+        "working-1",
+        "wakako-zake",
+        "pupipo",
+        "danna-ga-nani-wo-itteiru-ka-wakaranai-ken",
+        "gyakkyou-burai-kaiji-ultimate-survivor",
+        "cowboy-bebop",
+        "mobile-suit-gundam-thunderbolt",
+        "ys",
+        "serial-experiments-lain",
+        "sakamoto-desu-ga",
+        "android-ana-maico-2010",
+        "lodoss-tou-senki",
+        "thunderbolt-fantasy",
+        "mushishi-zoku-shou",
+        "nourin",
+        "service-x-servant",
+        "mawaru-penguindrum"
+    ],
+    "schedule": [
+        {"id": "hanasaku-iroha", "time": "09:00PM", "episode": 1},
+        {"id": "girlish-number", "time": "09:50PM", "episode": 1},
+        {"id": "lupin-iii-part-iv", "time": "10:15PM", "episode": 1},
+        {"id": "initial-d-first-stage", "time": "11:00PM", "episode": 1}
+    ]
+}
