@@ -55,7 +55,7 @@ function WatchList({ lineup, language }) {
             episodeCount,
         } = show;
         return (
-            <tr>
+            <tr key={id}>
                 <td>
                     <a className="tooltip" href={link}>
                         { title }
@@ -113,7 +113,7 @@ function Schedule({ lineup, language }) {
             episodeCount,
         } = timeslot;
         return (
-            <tr>
+            <tr key={id}>
                 <td>
                     <a className="tooltip" href={link}>
                         { title }

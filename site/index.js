@@ -1,12 +1,11 @@
 const express = require('express');
 const { find } = require('lodash');
+const fs = require('fs');
 
 const app = express();
 const Kitsu = require('./backends/kitsu');
-const anime = require('./static/schedule.json');
 
 const kitsu = new Kitsu();
-
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
@@ -19,6 +18,8 @@ app.get('/', async (req, res, next) => {
             language = 'en',
         }
     } = req;
+
+    const anime = JSON.parse(fs.readFileSync(`${__dirname}/schedule.json`, 'utf8'));
 
     const watched = await kitsu.fetchAnime(anime.watched);
     const schedule = await kitsu.fetchAnime(anime.schedule.map(({ id }) => id));
@@ -35,21 +36,20 @@ app.get('/', async (req, res, next) => {
         ),
     };
     const resolution = quality === 'low' ? "480p" : "720p"
+    const root = `${req.protocol}://${req.hostname}`;
     res.render('index', {
         brand: 'Anime Underground',
         tagline: 'Live Fridays @ 9pm EST',
         language,
         quality,
-        streamRoot: `${req.hostname}/hls/animeunderground.m3u8`,
-        stream: `${req.hostname}/hls/animeunderground_${resolution}/index.m3u8`,
-        streamFallback: `${req.hostname}/hls/animeunderground_480p/index.m3u8`,
+        streamRoot: `${root}/hls/animeunderground.m3u8`,
+        stream: `${root}/hls/animeunderground_${resolution}/index.m3u8`,
+        streamFallback: `${root}/hls/animeunderground_480p/index.m3u8`,
         lineup,
     });
 
     next();
 });
-
-app.use('/static', express.static('static'))
 
 app.listen(8080, () => {
     console.log(`Ready to serve from port ${8080}`);
